@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ayush Garg — not ai, not a template</title>
+  <meta name="description" content="Ayush Garg — CS student at Mahindra University. Builds things with ML, java, and caffeine. Hand-written in Hyderabad, 2026." />
+  <meta name="theme-color" content="#fffaf0" />
+
+  <!-- Social cards -->
+  <meta property="og:title" content="Ayush Garg — Portfolio" />
+  <meta property="og:description" content="CS student from India building things with ML and caffeine." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Caveat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Favicon: a tiny nod to the logo mark -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23fffaf0'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='serif' font-size='52' font-style='italic' font-weight='700' fill='%231a1612'%3Ea%3C/text%3E%3Ccircle cx='50' cy='18' r='6' fill='%230033ff'/%3E%3C/svg%3E" />
+
+  <style>
+    /* ---------- reset + tokens ---------- */
+    :root {
+      --bg: #fffaf0;
+      --ink: #1a1612;
+      --ink-soft: #2a2620;
+      --mute: #5a544a;
+      --paper: #f5f0e6;
+      --blue: #0033ff;
+      --yellow: #ffd84d;
+      --red: #ff4d2e;
+      --green: #00a860;
+      --hair: #1a1612;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--yellow); color: var(--ink); }
+
+    /* ---------- animations ---------- */
+    @keyframes bcscroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-33.333%); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(2.5deg); }
+      50%      { transform: rotate(1.2deg); }
+    }
+    @keyframes underlineDraw {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: fadeUp 600ms cubic-bezier(.2,.7,.2,1) forwards; }
+
+    /* ---------- ticker ---------- */
+    .ticker {
+      background: var(--ink);
+      color: var(--yellow);
+      padding: 10px 0;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: bcscroll 60s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-inner span { display: inline-block; }
+
+    /* ---------- nav ---------- */
+    nav.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 56px;
+      border-bottom: 1px solid var(--hair);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 50;
+    }
+    .logo {
+      font-family: "Fraunces", "Space Grotesk", serif;
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .logo .star { color: var(--blue); }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      font-size: 16px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -4px;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 220ms cubic-bezier(.2,.7,.2,1);
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a.accent { color: var(--blue); font-weight: 600; }
+    .nav-links a.accent::after { background: var(--yellow); }
+    .nav-clock {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: var(--mute);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      padding: 64px 56px 40px;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    .hero-greet {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      color: var(--mute);
+      margin: 0 0 20px;
+      letter-spacing: 0.05em;
+    }
+    .hero-h1 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(56px, 7.2vw, 108px);
+      line-height: 0.95;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      margin: 0 0 36px;
+    }
+    .hero-h1 .soft {
+      color: var(--blue);
+      font-style: italic;
+      position: relative;
+      display: inline-block;
+    }
+    .hero-h1 .soft::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 6px;
+      height: 6px;
+      background: var(--yellow);
+      z-index: -1;
+      transform-origin: left;
+      animation: underlineDraw 700ms cubic-bezier(.2,.7,.2,1) 400ms both;
+    }
+    .hero-h1 .bad {
+      color: var(--red);
+      font-style: italic;
+      text-decoration: line-through;
+      text-decoration-color: var(--ink);
+      text-decoration-thickness: 4px;
+    }
+    .hero-sub {
+      font-size: clamp(18px, 1.5vw, 22px);
+      line-height: 1.45;
+      max-width: 52ch;
+      margin: 0 0 32px;
+      color: var(--ink-soft);
+    }
+    .hero-sub .hl {
+      background: var(--yellow);
+      padding: 0 6px;
+      border-radius: 2px;
+    }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      font-size: 13px;
+      padding: 6px 14px;
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      font-weight: 500;
+      transform-origin: center;
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .chip:nth-child(1) { transform: rotate(-1.2deg); }
+    .chip:nth-child(2) { transform: rotate(0.8deg); }
+    .chip:nth-child(3) { transform: rotate(-0.5deg); }
+    .chip:nth-child(4) { transform: rotate(1.3deg); }
+    .chip:nth-child(5) { transform: rotate(-0.9deg); }
+    .chip:hover { background: var(--yellow); transform: rotate(0) scale(1.03); }
+
+    /* hero photo */
+    .hero-right { position: relative; padding-top: 20px; }
+    .photo-wrap {
+      position: relative;
+      transform: rotate(2.5deg);
+      width: 100%;
+      animation: wiggle 8s ease-in-out infinite;
+    }
+    .photo {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      object-position: center 25%;
+      background: #e9e2d3;
+      box-shadow: 0 6px 0 var(--ink);
+    }
+    .tape {
+      position: absolute;
+      top: -14px;
+      width: 80px;
+      height: 28px;
+      background: rgba(255, 216, 77, 0.75);
+      border: 1px solid rgba(26,22,18,0.15);
+    }
+    .tape-l { left: 30px; transform: rotate(-8deg); }
+    .tape-r { right: 40px; transform: rotate(6deg); }
+    .photo-caption {
+      position: absolute;
+      bottom: -76px;
+      left: -12px;
+      font-family: "Caveat", "Comic Sans MS", cursive;
+      font-size: 22px;
+      color: var(--ink);
+      transform: rotate(-3deg);
+      line-height: 1.15;
+    }
+    .photo-caption small {
+      font-size: 15px;
+      color: var(--mute);
+      display: block;
+    }
+    .photo-stamp {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--blue);
+      color: var(--bg);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-family: "JetBrains Mono", monospace;
+      letter-spacing: 0.12em;
+      display: flex;
+      gap: 8px;
+      transform: rotate(3deg);
+    }
+    .scroll-hint {
+      margin-top: 120px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: var(--mute);
+      letter-spacing: 0.05em;
+    }
+    .scroll-hint .dot { color: var(--red); margin-right: 6px; }
+
+    /* ---------- band ---------- */
+    .band {
+      background: var(--blue);
+      color: var(--bg);
+      padding: 20px 0;
+      overflow: hidden;
+      font-family: "Fraunces", serif;
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-style: italic;
+      font-weight: 500;
+      white-space: nowrap;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+    }
+    .band-scroll {
+      display: inline-block;
+      animation: bcscroll 45s linear infinite;
+    }
+    .band-accent { color: var(--yellow); }
+
+    /* ---------- sections shared ---------- */
+    section.block {
+      padding: 80px 56px;
+      border-bottom: 1px solid var(--hair);
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .section-num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: var(--mute);
+    }
+    .section-title {
+      font-family: "Fraunces", serif;
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      margin: 0;
+      font-style: italic;
+    }
+    .section-note {
+      font-family: "Caveat", cursive;
+      font-size: clamp(18px, 1.8vw, 22px);
+      color: var(--mute);
+      margin-left: 8px;
+    }
+
+    /* ---------- projects ---------- */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .project {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      padding: 36px 40px;
+      background: var(--paper);
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 300ms ease, color 300ms ease, transform 200ms ease;
+      position: relative;
+    }
+    .project:hover {
+      background: var(--hover-color, var(--blue));
+      color: var(--bg);
+      transform: translateX(-4px);
+    }
+    .project:hover .proj-tag {
+      background: rgba(255,255,255,0.15);
+      color: var(--bg);
+    }
+    .project:hover .proj-stack { color: rgba(255,250,240,0.75); }
+    .project:hover .proj-arrow { transform: translateX(6px) rotate(-20deg); }
+    .proj-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      background: var(--tag-color, var(--blue));
+      color: var(--bg);
+      transition: background 300ms ease, color 300ms ease;
+    }
+    .proj-title {
+      font-family: "Fraunces", serif;
+      font-size: clamp(30px, 3.8vw, 48px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px;
+      line-height: 1;
+    }
+    .proj-blurb {
+      font-size: clamp(16px, 1.3vw, 18px);
+      line-height: 1.5;
+      max-width: 60ch;
+      margin: 0 0 16px;
+    }
+    .proj-stack {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      margin: 0;
+      color: var(--mute);
+      transition: color 300ms ease;
+    }
+    .proj-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      text-align: right;
+    }
+    .proj-year {
+      font-family: "Fraunces", serif;
+      font-size: clamp(40px, 4.5vw, 56px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .proj-arrow {
+      font-size: 44px;
+      transition: transform 200ms ease;
+      display: inline-block;
+      transform: rotate(-20deg);
+    }
+
+    /* ---------- stack ---------- */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .stack-card {
+      border: 1.5px solid var(--ink);
+      border-radius: 4px;
+      padding: 24px;
+      background: var(--bg);
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .stack-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .stack-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 14px;
+    }
+    .stack-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .stack-items span::after {
+      content: '·';
+      margin-left: 12px;
+      color: var(--mute);
+    }
+    .stack-items span:last-child::after { content: ''; }
+
+    /* ---------- life ---------- */
+    .life-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .life-card {
+      border: 1.5px solid var(--ink);
+      border-radius: 4px;
+      padding: 28px 32px;
+      background: var(--bg);
+      transition: transform 200ms ease;
+    }
+    .life-card:hover { transform: translateY(-3px); }
+    .life-card.dark { background: var(--ink); color: var(--bg); }
+    .life-card.blue { background: var(--blue); color: var(--bg); }
+    .life-year {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--mute);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .life-card.dark .life-year, .life-card.blue .life-year { color: var(--yellow); }
+    .life-title {
+      font-family: "Fraunces", serif;
+      font-size: clamp(22px, 2vw, 26px);
+      font-weight: 500;
+      margin: 0 0 10px;
+      letter-spacing: -0.01em;
+    }
+    .life-blurb {
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+      color: var(--ink-soft);
+    }
+    .life-card.dark .life-blurb, .life-card.blue .life-blurb { color: rgba(255,250,240,0.85); }
+
+    /* ---------- contact ---------- */
+    .contact {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 96px 56px 40px;
+    }
+    .contact-inner { max-width: 900px; }
+    .contact-kicker {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: var(--yellow);
+      margin: 0 0 20px;
+    }
+    .contact-h2 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(52px, 8vw, 92px);
+      line-height: 0.95;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      margin: 0 0 28px;
+      font-style: italic;
+    }
+    .contact-sub {
+      font-size: clamp(18px, 1.5vw, 22px);
+      color: rgba(255,250,240,0.7);
+      margin: 0 0 48px;
+      max-width: 50ch;
+    }
+    .contact-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: "Fraunces", serif;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--yellow);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,250,240,0.2);
+      padding-bottom: 16px;
+      font-style: italic;
+      transition: color 200ms ease, transform 200ms ease;
+      gap: 16px;
+    }
+    .contact-main:hover {
+      color: var(--bg);
+      transform: translateX(4px);
+    }
+    .contact-main .arrow { font-size: 36px; }
+    .contact-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .contact-small {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: rgba(255,250,240,0.6);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    .contact-small:hover { color: var(--yellow); }
+    .contact-foot {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,250,240,0.12);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: rgba(255,250,240,0.4);
+      letter-spacing: 0.05em;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ---------- mobile ---------- */
+    @media (max-width: 880px) {
+      nav.top { padding: 16px 24px; gap: 12px; flex-wrap: wrap; }
+      .nav-links { gap: 16px; font-size: 14px; order: 3; width: 100%; justify-content: flex-start; }
+      .nav-links a { font-size: 14px; }
+      .nav-clock { display: none; }
+
+      .hero { padding: 40px 24px 32px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-right { padding-top: 0; }
+      .photo { height: 360px; }
+      .photo-caption { bottom: -68px; font-size: 20px; }
+      .scroll-hint { margin-top: 100px; }
+
+      section.block { padding: 56px 24px; }
+      .project { grid-template-columns: 1fr; padding: 24px 24px; gap: 16px; }
+      .proj-right { flex-direction: row; align-items: center; }
+      .proj-arrow { font-size: 32px; }
+      .proj-year { font-size: 40px; }
+
+      .stack-grid { grid-template-columns: 1fr; }
+      .life-grid { grid-template-columns: 1fr; }
+
+      .contact { padding: 64px 24px 32px; }
+      .contact-main { flex-direction: row; align-items: center; }
+      .contact-main span:first-child {
+        font-size: clamp(20px, 5.5vw, 36px);
+        word-break: break-all;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .photo-wrap { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-inner">
+      <span>★ AYUSH.GARG ★ NOT AI ★ NOT A TEMPLATE ★ HAND-WRITTEN IN HYDERABAD ★ OPEN MIC HAVER ★ CS @ MAHINDRA ★ PROBABLY OVERCAFFEINATED ★&nbsp;</span>
+      <span>★ AYUSH.GARG ★ NOT AI ★ NOT A TEMPLATE ★ HAND-WRITTEN IN HYDERABAD ★ OPEN MIC HAVER ★ CS @ MAHINDRA ★ PROBABLY OVERCAFFEINATED ★&nbsp;</span>
+      <span>★ AYUSH.GARG ★ NOT AI ★ NOT A TEMPLATE ★ HAND-WRITTEN IN HYDERABAD ★ OPEN MIC HAVER ★ CS @ MAHINDRA ★ PROBABLY OVERCAFFEINATED ★&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- nav -->
+  <nav class="top">
+    <a href="#top" class="logo">ay<span class="star">*</span>ush</a>
+    <div class="nav-links">
+      <a href="#work">(work)</a>
+      <a href="#stack">(stack)</a>
+      <a href="#life">(life)</a>
+      <a href="#say-hi" class="accent">(say hi →)</a>
+    </div>
+    <span class="nav-clock" id="clock">—:— IST</span>
+  </nav>
+
+  <!-- hero -->
+  <section class="hero" id="top">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="hero-greet" id="greet">hey, good afternoon —</p>
+        <h1 class="hero-h1">
+          i'm ayush.<br>
+          i make <span class="soft">software</span>,<br>
+          and sometimes i make <span class="bad">jokes</span> about it.
+        </h1>
+        <p class="hero-sub">
+          CS student from India, building things with <span class="hl">ML</span> and <span class="hl">caffeine</span>. Recent obsessions: recommender systems, open mics, and whatever the timeline is yelling about this week.
+        </p>
+        <div class="hero-chips">
+          <span class="chip">grade 6 classical guitar (lapsed)</span>
+          <span class="chip">writes &amp; performs stand-up</span>
+          <span class="chip">competitive gamer, strategic type</span>
+          <span class="chip">cgpa 8.0 · mahindra university</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="photo-wrap">
+          <img src="assets/ayush.jpeg" alt="Ayush Garg" class="photo" />
+          <span class="tape tape-l" aria-hidden="true"></span>
+          <span class="tape tape-r" aria-hidden="true"></span>
+          <div class="photo-caption">
+            ← looking at the future
+            <small>(actually just a boat)</small>
+          </div>
+          <div class="photo-stamp">
+            <span>ayush</span><span>'26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="scroll-hint">
+      <span class="dot">●</span>scroll for the good stuff
+    </p>
+  </section>
+
+  <!-- band -->
+  <div class="band" aria-hidden="true">
+    <div class="band-scroll">
+      <span>currently building&nbsp;→&nbsp;</span><span class="band-accent">a peer-to-peer tutoring platform with an ML brain</span><span>&nbsp;·&nbsp;currently reading&nbsp;→&nbsp;</span><span class="band-accent">papers i should have read last week</span><span>&nbsp;·&nbsp;currently avoiding&nbsp;→&nbsp;</span><span class="band-accent">theory of computation homework</span><span>&nbsp;·&nbsp;currently building&nbsp;→&nbsp;</span><span class="band-accent">a peer-to-peer tutoring platform with an ML brain</span><span>&nbsp;·&nbsp;currently reading&nbsp;→&nbsp;</span><span class="band-accent">papers i should have read last week</span><span>&nbsp;·&nbsp;currently avoiding&nbsp;→&nbsp;</span><span class="band-accent">theory of computation homework</span><span>&nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- work -->
+  <section class="block" id="work">
+    <div class="section-head reveal">
+      <span class="section-num">01 /</span>
+      <h2 class="section-title">stuff i've built</h2>
+      <span class="section-note">(some more finished than others)</span>
+    </div>
+
+    <div class="project-list">
+      <a class="project reveal" href="https://github.com/okayayushhh/Peer2Peer-Platform" target="_blank" rel="noopener"
+         style="--hover-color: #0033ff; --tag-color: #0033ff;">
+        <div class="proj-left">
+          <span class="proj-tag">full-stack + ml</span>
+          <h3 class="proj-title">peer-to-peer tutoring</h3>
+          <p class="proj-blurb">students book peer mentors through a smart scheduling and matching system. a questionnaire-driven ML recommender builds personalised learning paths, and an NLP-tagged Q&amp;A forum catches duplicate questions before they pile up.</p>
+          <p class="proj-stack">react · node · express · fastapi · sklearn · mongo</p>
+        </div>
+        <div class="proj-right">
+          <span class="proj-year">'26</span>
+          <span class="proj-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="project reveal" href="https://github.com/okayayushhh/cv-detection-system" target="_blank" rel="noopener"
+         style="--hover-color: #ff4d2e; --tag-color: #ff4d2e;">
+        <div class="proj-left">
+          <span class="proj-tag">computer vision</span>
+          <h3 class="proj-title">item detection / CV</h3>
+          <p class="proj-blurb">end-to-end object detection + classification in PyTorch. OpenCV preprocessing and data augmentation for real-world robustness, with mAP, precision, and recall on the way out.</p>
+          <p class="proj-stack">python · pytorch · opencv · numpy</p>
+        </div>
+        <div class="proj-right">
+          <span class="proj-year">'26</span>
+          <span class="proj-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="project reveal" href="https://github.com/okayayushhh/Pothole_reporter" target="_blank" rel="noopener"
+         style="--hover-color: #00a860; --tag-color: #00a860;">
+        <div class="proj-left">
+          <span class="proj-tag">civic tech</span>
+          <h3 class="proj-title">pothole reporter</h3>
+          <p class="proj-blurb">an SMS-based civic tool — users text a geotagged pothole report with a photo. Spring Boot ingests the reports via Twilio, a structured SQL database tracks them, and REST APIs enable retrieval and geographic analysis.</p>
+          <p class="proj-stack">java · spring boot · twilio · sql · rest</p>
+        </div>
+        <div class="proj-right">
+          <span class="proj-year">'25</span>
+          <span class="proj-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="project reveal" href="https://github.com/okayayushhh/Student_Database_Management_System" target="_blank" rel="noopener"
+         style="--hover-color: #1a1612; --tag-color: #1a1612;">
+        <div class="proj-left">
+          <span class="proj-tag">web server</span>
+          <h3 class="proj-title">student database system</h3>
+          <p class="proj-blurb">a web server that manages student grades with CSV-based persistence. smaller than the others on this list, but it's where a lot of the backend muscle memory came from.</p>
+          <p class="proj-stack">javascript · node · csv</p>
+        </div>
+        <div class="proj-right">
+          <span class="proj-year">'24</span>
+          <span class="proj-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- stack -->
+  <section class="block" id="stack">
+    <div class="section-head reveal">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title">the toolbox</h2>
+      <span class="section-note">(things i reach for without googling)</span>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-card reveal">
+        <div class="stack-label">languages</div>
+        <div class="stack-items">
+          <span>python</span><span>java</span><span>c</span><span>javascript</span><span>html/css</span><span>sql</span><span>matlab</span>
+        </div>
+      </div>
+      <div class="stack-card reveal">
+        <div class="stack-label">frameworks</div>
+        <div class="stack-items">
+          <span>react</span><span>node</span><span>express</span><span>fastapi</span><span>spring boot</span>
+        </div>
+      </div>
+      <div class="stack-card reveal">
+        <div class="stack-label">ml &amp; data</div>
+        <div class="stack-items">
+          <span>pytorch</span><span>scikit-learn</span><span>opencv</span><span>pandas</span><span>numpy</span><span>matplotlib</span>
+        </div>
+      </div>
+      <div class="stack-card reveal">
+        <div class="stack-label">ops &amp; tools</div>
+        <div class="stack-items">
+          <span>git</span><span>docker</span><span>aws</span><span>kubernetes</span><span>vs code</span><span>intellij</span>
+        </div>
+      </div>
+      <div class="stack-card reveal">
+        <div class="stack-label">coursework</div>
+        <div class="stack-items">
+          <span>ml</span><span>recsys</span><span>quantum ml</span><span>image proc.</span><span>compilers</span><span>dsa</span><span>theory of comp.</span>
+        </div>
+      </div>
+      <div class="stack-card reveal">
+        <div class="stack-label">certs</div>
+        <div class="stack-items">
+          <span>deeplearning.ai</span><span>ibm data sci.</span><span>pcep python</span><span>duke java</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- life -->
+  <section class="block" id="life">
+    <div class="section-head reveal">
+      <span class="section-num">03 /</span>
+      <h2 class="section-title">side quests</h2>
+      <span class="section-note">(the xp bar doesn't only fill at a desk)</span>
+    </div>
+
+    <div class="life-grid">
+      <div class="life-card reveal">
+        <span class="life-year">2025</span>
+        <h4 class="life-title">Tech Head — Etincelle</h4>
+        <p class="life-blurb">ran the technical crew for Soiree Francophonie, a french cultural events night at Mahindra. AV setup, on-site infra, and staying calm when the speakers died five minutes before doors.</p>
+      </div>
+      <div class="life-card blue reveal">
+        <span class="life-year">2024</span>
+        <h4 class="life-title">Events Head — Gamescon</h4>
+        <p class="life-blurb">led planning and execution of a campus gaming tournament — brackets, logistics, team coordination, and registration for 100+ players. trash talk is important infrastructure.</p>
+      </div>
+      <div class="life-card reveal">
+        <span class="life-year">2024–25</span>
+        <h4 class="life-title">Member — Enigma Club</h4>
+        <p class="life-blurb">the university's competitive programming and project club. coding challenges, group builds, and figuring out which decisions are just dressed-up graph problems.</p>
+      </div>
+      <div class="life-card dark reveal">
+        <span class="life-year">2013–19</span>
+        <h4 class="life-title">Classical Guitar — Grade 6</h4>
+        <p class="life-blurb">six years of structured practice to Trinity/ABRSM grade 6. taught me that discipline and bleeding fingertips are a package deal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section class="contact" id="say-hi">
+    <div class="contact-inner">
+      <p class="contact-kicker">04 /</p>
+      <h2 class="contact-h2">
+        got a bug, a brief,<br>
+        or a bad pun?
+      </h2>
+      <p class="contact-sub">send it over. i reply between classes and caffeine crashes.</p>
+
+      <a href="mailto:ayushgarg0212@gmail.com" class="contact-main">
+        <span>ayushgarg0212@gmail.com</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <div class="contact-row">
+        <a href="https://github.com/okayayushhh" target="_blank" rel="noopener" class="contact-small">github/okayayushhh ↗</a>
+        <a href="https://linkedin.com/in/ayush-garg" target="_blank" rel="noopener" class="contact-small">linkedin/ayush-garg ↗</a>
+        <a href="assets/Ayush_Garg_CV.pdf" target="_blank" rel="noopener" class="contact-small">download cv ↗</a>
+      </div>
+    </div>
+
+    <div class="contact-foot">
+      <span>made by hand · hyderabad · 2026</span>
+      <span>no templates were harmed in the making of this site</span>
+    </div>
+  </section>
+
+  <script>
+    // live clock — IST, to match screenshot
+    (function () {
+      var el = document.getElementById('clock');
+      var greetEl = document.getElementById('greet');
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      function render() {
+        // compute IST regardless of viewer timezone
+        var now = new Date();
+        var utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        var ist = new Date(utc + 5.5 * 60 * 60000);
+        var h = ist.getHours();
+        var m = ist.getMinutes();
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var h12 = h % 12 || 12;
+        el.textContent = pad(h12) + ':' + pad(m) + ' ' + ampm + ' IST';
+
+        var greet =
+          h < 5  ? 'still up?' :
+          h < 12 ? 'good morning' :
+          h < 17 ? 'good afternoon' :
+          h < 21 ? 'good evening' : 'late night?';
+        greetEl.textContent = 'hey, ' + greet + ' —';
+      }
+      render();
+      setInterval(render, 1000);
+    })();
+
+    // reveal-on-scroll
+    (function () {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
